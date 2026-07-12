@@ -1,0 +1,36 @@
+{
+  "name": "ai-investment-agent-backend",
+  "version": "1.0.0",
+  "description": "AI Investment Research Agent — Express API & LangGraph orchestration",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "lint": "eslint src/"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@langchain/anthropic": "^1.5.1",
+    "@langchain/core": "^1.2.2",
+    "@langchain/google-genai": "^2.2.0",
+    "@langchain/groq": "^1.3.1",
+    "@langchain/langgraph": "^1.4.7",
+    "@langchain/openai": "^1.5.5",
+    "@tavily/core": "^0.7.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.4.2",
+    "mongoose": "^8.9.3",
+    "winston": "^3.17.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.17.0"
+  }
+}
