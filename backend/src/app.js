@@ -14,9 +14,37 @@ const app = express();
 
 // Security & parsing
 app.use(helmet());
+
+const allowedOrigins = env.CLIENT_URL.split(',').map(o => o.trim().replace(/\/$/, ''));
+
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+      if (!origin) return callback(null, true);
+      
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      
+      // 1. Exact match against configured CLIENT_URL(s)
+      if (allowedOrigins.includes(normalizedOrigin)) {
+        return callback(null, true);
+      }
+      
+      // 2. Allow local development automatically
+      if (normalizedOrigin.startsWith('http://localhost:')) {
+        return callback(null, true);
+      }
+      
+      // 3. Allow Vercel preview/branch deployments for this project
+      if (
+        normalizedOrigin.endsWith('.vercel.app') && 
+        (normalizedOrigin.includes('kancharana-tanay') || normalizedOrigin.includes('ai-research-agent'))
+      ) {
+        return callback(null, true);
+      }
+      
+      callback(null, false);
+    },
     credentials: true,
   }),
 );
