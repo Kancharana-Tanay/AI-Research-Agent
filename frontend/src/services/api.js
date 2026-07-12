@@ -7,8 +7,13 @@ import axios from 'axios';
 // Configured to communicate with http://localhost:5000/api.
 // ---------------------------------------------------------------------------
 
+let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+if (baseURL && !baseURL.endsWith('/api') && !baseURL.endsWith('/api/')) {
+  baseURL = baseURL.replace(/\/$/, '') + '/api';
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL,
   timeout: 15000,
 });
 
