@@ -1,4 +1,4 @@
-﻿import { tavily } from '@tavily/core';
+import { tavily } from '@tavily/core';
 import { env } from '../config/env.js';
 import logger from '../utils/logger.js';
 
@@ -31,13 +31,14 @@ import logger from '../utils/logger.js';
 //     is unavailable, so the pipeline is never blocked.
 // ---------------------------------------------------------------------------
 
-const DEFAULT_LIMIT = 15;
+const DEFAULT_LIMIT = 5;           // Keep low — Tavily content is dense (~1k chars/article)
+const CONTENT_TRUNCATE_CHARS = 400; // Max chars per article summary sent to LLM
 
 /**
  * Fetches and normalises recent news for a given company via Tavily search.
  *
  * @param {string} ticker        - Stock ticker symbol, e.g. "AAPL"
- * @param {number} [limit=15]    - Maximum number of articles to return
+ * @param {number} [limit=5]     - Maximum number of articles to return
  * @param {string} [companyName] - Human-readable company name for better queries
  * @returns {Promise<Array<object>>} Array of normalised news items
  */
@@ -59,7 +60,7 @@ export async function companyNewsTool(ticker, limit = DEFAULT_LIMIT, companyName
     const response = await client.search(query, {
       searchDepth: 'basic',
       topic: 'news',
-      maxResults: Math.min(limit, 20),
+      maxResults: Math.min(limit, 5), // Hard cap at 5 to control token cost
       includeAnswer: false,
     });
 
@@ -76,13 +77,20 @@ export async function companyNewsTool(ticker, limit = DEFAULT_LIMIT, companyName
       if (url && seen.has(url)) continue;
       if (url) seen.add(url);
 
+      // Truncate content — Tavily returns full scraped article text which
+      // can be 1k–3k chars. We only need the leading excerpt for sentiment
+      // inference and LLM context; the rest is noise that burns tokens.
+      const truncatedContent = item.content
+        ? item.content.slice(0, CONTENT_TRUNCATE_CHARS).trimEnd() + (item.content.length > CONTENT_TRUNCATE_CHARS ? '…' : '')
+        : null;
+
       articles.push({
         headline: item.title,
         source: extractDomain(url),
         url,
         publishedAt: item.published_date ? new Date(item.published_date).toISOString() : null,
-        summary: item.content ?? null,
-        sentiment: inferSentiment(item.title, item.content),
+        summary: truncatedContent,
+        sentiment: inferSentiment(item.title, truncatedContent),
         ticker: ticker.toUpperCase(),
       });
     }

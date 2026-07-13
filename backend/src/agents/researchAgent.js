@@ -97,7 +97,7 @@ export async function researchAgent(state) {
     logger.info('[ResearchAgent] Fetching primary datasets in parallel', { ticker });
     const [profileResult, newsResult, technicalResult] = await Promise.allSettled([
       companyProfileTool(ticker),
-      companyNewsTool(ticker, 15, resolvedInfo?.name ?? state.company),
+      companyNewsTool(ticker, 5, resolvedInfo?.name ?? state.company),
       technicalSnapshotTool(ticker)
     ]);
 
