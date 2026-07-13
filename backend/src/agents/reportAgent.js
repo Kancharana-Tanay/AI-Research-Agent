@@ -60,7 +60,7 @@ export async function reportAgent(state) {
 
   // 1. Initialize LLM and bind structured output schema
   const llm = await getLLM();
-  const structuredLlm = llm.withStructuredOutput(reportSchema, { method: 'json_mode' });
+  const structuredLlm = llm.withStructuredOutput(reportSchema, { method: 'jsonMode' });
 
   const systemMessage = new SystemMessage(
     'You are a senior equity research editor. Your job is to draft a comprehensive, publication-ready ' +

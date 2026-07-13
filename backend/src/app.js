@@ -12,6 +12,10 @@ import researchRoutes from './routes/taskRoutes.js';
 
 const app = express();
 
+// Trust the first proxy hop (Render, Vercel, AWS ALB, Nginx, etc.)
+// Required so express-rate-limit can correctly identify client IPs from X-Forwarded-For
+app.set('trust proxy', 1);
+
 // Security & parsing
 app.use(helmet());
 

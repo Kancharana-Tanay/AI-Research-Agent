@@ -89,7 +89,7 @@ export async function analysisAgent(state) {
 
   // 1. Initialize LLM and bind structured output schema
   const llm = await getLLM();
-  const structuredLlm = llm.withStructuredOutput(analysisSchema, { method: 'json_mode' });
+  const structuredLlm = llm.withStructuredOutput(analysisSchema, { method: 'jsonMode' });
 
   const systemMessage = new SystemMessage(
     'You are a senior equity research analyst. Your task is to perform a comprehensive financial, technical, ' +
