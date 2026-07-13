@@ -1,4 +1,4 @@
-import { tavily } from '@tavily/core';
+﻿import { tavily } from '@tavily/core';
 import { env } from '../config/env.js';
 import logger from '../utils/logger.js';
 
@@ -31,14 +31,14 @@ import logger from '../utils/logger.js';
 //     is unavailable, so the pipeline is never blocked.
 // ---------------------------------------------------------------------------
 
-const DEFAULT_LIMIT = 5;           // Keep low — Tavily content is dense (~1k chars/article)
+const DEFAULT_LIMIT = 2;           // Keep low — Tavily content is dense (~1k chars/article)
 const CONTENT_TRUNCATE_CHARS = 400; // Max chars per article summary sent to LLM
 
 /**
  * Fetches and normalises recent news for a given company via Tavily search.
  *
  * @param {string} ticker        - Stock ticker symbol, e.g. "AAPL"
- * @param {number} [limit=5]     - Maximum number of articles to return
+ * @param {number} [limit=2]     - Maximum number of articles to return
  * @param {string} [companyName] - Human-readable company name for better queries
  * @returns {Promise<Array<object>>} Array of normalised news items
  */
@@ -60,7 +60,7 @@ export async function companyNewsTool(ticker, limit = DEFAULT_LIMIT, companyName
     const response = await client.search(query, {
       searchDepth: 'basic',
       topic: 'news',
-      maxResults: Math.min(limit, 5), // Hard cap at 5 to control token cost
+      maxResults: Math.min(limit, DEFAULT_LIMIT), // Hard cap at DEFAULT_LIMIT to control token cost
       includeAnswer: false,
     });
 
