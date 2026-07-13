@@ -120,7 +120,7 @@ export async function researchAgent(state) {
   // 3. Consult LLM on data sufficiency and summary
   logger.info('[ResearchAgent] Evaluating evidence sufficiency via LLM', { ticker });
   const llm = await getLLM();
-  const structuredLlm = llm.withStructuredOutput(evaluationSchema, { method: 'jsonMode' });
+  const structuredLlm = llm.withStructuredOutput(evaluationSchema);
 
   const systemMessage = new SystemMessage(
     'You are a senior investment research coordinator. Your job is to analyze the gathered research on a company ' +

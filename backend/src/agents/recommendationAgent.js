@@ -48,7 +48,7 @@ export async function recommendationAgent(state) {
 
   // 1. Initialize LLM and bind structured output schema
   const llm = await getLLM();
-  const structuredLlm = llm.withStructuredOutput(recommendationSchema, { method: 'jsonMode' });
+  const structuredLlm = llm.withStructuredOutput(recommendationSchema);
 
   const systemMessage = new SystemMessage(
     'You are a senior investment committee director. Your job is to review the compiled equity research report ' +
