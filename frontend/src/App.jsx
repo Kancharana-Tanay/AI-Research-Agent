@@ -105,7 +105,7 @@ export default function App() {
             <Layers className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-white m-0 leading-none">Antigravity Research</h1>
+            <h1 className="text-xl font-bold tracking-tight text-white m-0 leading-none">Investment Research Agent</h1>
             <p className="text-xs text-sky-400 mt-1 m-0">AI-Powered Multi-Agent Investment Broker</p>
           </div>
         </div>
